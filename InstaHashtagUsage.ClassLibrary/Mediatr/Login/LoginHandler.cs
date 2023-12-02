@@ -34,7 +34,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, bool>
 			var passwordResult = await page.TypeFieldValueAsync(_passwordInputSelector, request.Password);
 			var submitButton = await page.QuerySelectorAsync(_loginButtonSelector);
 			await submitButton.ClickAsync();
-			await page.WaitForNavigationAsync(new NavigationOptions { Timeout = 5000, WaitUntil = new WaitUntilNavigation[] {WaitUntilNavigation.Networkidle2} });
+			await page.WaitForNavigationAsync(new NavigationOptions {Timeout = 7000});
 			bool result = page.Url != _loginUrl;
 			return result;
 		}
