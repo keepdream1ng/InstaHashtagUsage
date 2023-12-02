@@ -1,0 +1,19 @@
+@inject IMediator mediator;
+@inject ILogger<HashtagInput> logger;
+
+<form @onsubmit="Submit">
+	<label for="addHashtagInput">Add hashtag to check:</label>
+	<input id="addHashtagInput" placeholder="words you interested in" @bind-value="newInput" required />
+	<button type="submit">Add</button>
+</form>
+
+@code {
+	private string newInput { get; set; } = string.Empty;
+
+	private async void Submit()
+	{
+		await mediator.Publish(new NewInputNotification(newInput));
+		logger.LogInformation("Submitted new input {newInput}", newInput);
+		newInput = string.Empty;
+	}
+}

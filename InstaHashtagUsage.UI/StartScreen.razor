@@ -1,18 +1,44 @@
 @inject IMediator mediator;
 @inject ILogger<StartScreen> logger;
 
-<form @onsubmit="Submit">
-	<label for="addHashtagInput">Add hashtag to check:</label>
-	<input id="addHashtagInput" placeholder="words you interested in" @bind-value="newInput" required/>
-	<button type="submit">Add</button>
-</form>
+
+@if (LoggedIn != true)
+{
+	<form @onsubmit="Login">
+		<label>
+			Login:
+			<input placeholder="fresh login" @bind-value="login" required />
+		</label>
+		<br />
+		<label>
+			Password:
+			<input type="password" placeholder="fresh password" @bind-value="password" required />
+		</label>
+		<br />
+		<button type="submit">Login</button>
+	</form>
+	@if (LoggedIn == false)
+	{
+		<p>Logging in failed.</p>
+	}
+}
+
+@if (LoggedIn == true)
+{
+	<p>Logged in successfully.</p>
+	<HashtagInput />
+}
 
 @code {
-	private string newInput { get; set; } = string.Empty;
+	public bool? LoggedIn { get; set; } = null;
+	private string login = string.Empty;
+	private string password = string.Empty;
 
-	private void Submit()
+	private async void Login()
 	{
-		logger.LogInformation("Submitted new input {newInput}", newInput);
-		newInput = string.Empty;
+		logger.LogInformation("Login attempt {status}", "start");
+		LoggedIn = await mediator.Send(new LoginRequest(login, password));
+		logger.LogInformation("Login attempt {status}", LoggedIn==true? "success": "failed");
+		StateHasChanged();
 	}
 }

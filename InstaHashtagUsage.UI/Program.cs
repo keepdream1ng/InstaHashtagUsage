@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using Serilog.Formatting.Compact;
+using InstaHashtagUsage.ClassLibrary.Services;
 
 namespace InstaHashtagUsage.UI
 {
@@ -28,6 +29,9 @@ namespace InstaHashtagUsage.UI
 			var mainForm = serviceProvider.GetRequiredService<MainForm>();
 			Application.Run(mainForm);
 
+			// Closing the browser.
+			var browserManger  = serviceProvider.GetRequiredService<IBrowserManager>();
+			browserManger.Dispose();
 			// Close and flush the logger when the application exits
 			Log.CloseAndFlush();
 		}
@@ -52,6 +56,8 @@ namespace InstaHashtagUsage.UI
 			// Add services here
 			services.AddLogging(cfg => cfg.AddSerilog());
 			services.AddSingleton(configuration);
+			services.AddSingleton<IBrowserManager, BrowserManager>();
+			services.AddSingleton<IBrowserPageManager, BrowserPageManager>();
 			services.AddWindowsFormsBlazorWebView();
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(ClassLibraryEntryPoint)));
 			services.AddSingleton<MainForm>();
