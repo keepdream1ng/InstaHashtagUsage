@@ -6,6 +6,7 @@ public class BrowserPageManager : IBrowserPageManager
 	private readonly ILogger<BrowserPageManager> _logger;
 	private bool _pageInitialized;
 	private readonly object _lock = new object();
+	public bool PageIsInUse { get; set; } = false;
 	public IBrowserManager BrowserManager { get; private set; }
 
 	public BrowserPageManager(ILogger<BrowserPageManager> logger, IBrowserManager browserManager)

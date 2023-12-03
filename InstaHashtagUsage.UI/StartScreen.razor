@@ -7,15 +7,15 @@
 	<form @onsubmit="Login">
 		<label>
 			Login:
-			<input placeholder="fresh login" @bind-value="login" required />
+			<input placeholder="fresh login" @bind-value="login" autocomplete="on" required />
 		</label>
 		<br />
 		<label>
 			Password:
-			<input type="password" placeholder="fresh password" @bind-value="password" required />
+			<input placeholder="fresh password" @bind-value="password" autocomplete="on" required />
 		</label>
 		<br />
-		<button type="submit">Login</button>
+		<button disabled="@submitBtnDisabled" type="submit">Login</button>
 	</form>
 	@if (LoggedIn == false)
 	{
@@ -33,12 +33,15 @@
 	public bool? LoggedIn { get; set; } = null;
 	private string login = string.Empty;
 	private string password = string.Empty;
+	private bool submitBtnDisabled = false;
 
 	private async void Login()
 	{
 		logger.LogInformation("Login attempt {status}", "start");
+		submitBtnDisabled = true;
 		LoggedIn = await mediator.Send(new LoginRequest(login, password));
 		logger.LogInformation("Login attempt {status}", LoggedIn==true? "success": "failed");
+		submitBtnDisabled = false;
 		StateHasChanged();
 	}
 }
