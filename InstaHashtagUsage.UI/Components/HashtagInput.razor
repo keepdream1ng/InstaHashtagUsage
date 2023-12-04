@@ -12,8 +12,8 @@
 
 	private async void Submit()
 	{
-		await mediator.Publish(new NewInputNotification(newInput));
 		logger.LogInformation("Submitted new input {newInput}", newInput);
+		await mediator.Publish(new NewInputNotification(newInput));
 		newInput = string.Empty;
 	}
 }

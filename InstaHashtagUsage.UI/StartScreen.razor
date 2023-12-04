@@ -5,15 +5,15 @@
 @if (LoggedIn != true)
 {
 	<form @onsubmit="Login">
-		<label>
+		<label for="login">
 			Login:
-			<input placeholder="fresh login" @bind-value="login" autocomplete="on" required />
 		</label>
+		<input id="login" placeholder="fresh login" @bind-value="login" required />
 		<br />
-		<label>
+		<label for="password">
 			Password:
-			<input placeholder="fresh password" @bind-value="password" autocomplete="on" required />
 		</label>
+		<input id="password" placeholder="fresh password" @bind-value="password" required />
 		<br />
 		<button disabled="@submitBtnDisabled" type="submit">Login</button>
 	</form>
@@ -40,7 +40,7 @@
 		logger.LogInformation("Login attempt {status}", "start");
 		submitBtnDisabled = true;
 		LoggedIn = await mediator.Send(new LoginRequest(login, password));
-		logger.LogInformation("Login attempt {status}", LoggedIn==true? "success": "failed");
+		logger.LogInformation("Login attempt {status}", LoggedIn == true ? "success" : "failed");
 		submitBtnDisabled = false;
 		StateHasChanged();
 	}
