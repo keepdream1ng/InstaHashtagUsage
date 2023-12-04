@@ -42,14 +42,17 @@ public class ProcessHashtagHandler : INotificationHandler<ProcessHashtagNotifica
 			var searchInput = await GetSearchInput(page);
 			bool deleteResult = await page.RemoveFieldValueAsync(_searchCssSelector, _inputDelay);
 			bool inputResult = await page.TypeFieldValueAsync(_searchCssSelector, $"#{hashtagToCheck}", _inputDelay);
-			await Task.Delay(_inputDelay * 5);
-			await page.WaitForXPathAsync($"//span[normalize-space(.)='#{hashtagToCheck}']/ancestor::span/following-sibling::span/span/span/span");
-			var result = await page.XPathAsync($"//span[normalize-space(.)='#{hashtagToCheck}']/ancestor::span/following-sibling::span/span/span/span");
-			var innerHtml = await result[0].GetPropertyAsync("innerHTML").Result.JsonValueAsync<string>();
+			string resultXPath = _configuration["searchResultXpath"]
+				.Replace("hashtagWord", hashtagToCheck);
+			await page.WaitForXPathAsync(resultXPath);
+			var result = await page.XPathAsync(resultXPath);
+			var innerHtml = await result[0]
+				.GetPropertyAsync("innerHTML")
+				.Result.JsonValueAsync<string>();
 			int number = ParseToInt(innerHtml);
 			_logger.LogInformation("Success for parsing #{hashtag}: {publications}", hashtagToCheck, number);
-
 			_browserPageManager.PageIsInUse = false;
+			await _mediator.Publish(new ParsingPublicationsDoneNotification(hashtagToCheck, number));
 			await _mediator.Publish(new ProcessHashtagNotification());
 		}
 		catch (Exception ex)
