@@ -36,6 +36,7 @@ public class ProcessHashtagHandler : INotificationHandler<ProcessHashtagNotifica
 
 		_browserPageManager.PageIsInUse = true;
 		string hashtagToCheck = await _hashtagQueue.GetHashtagAsync();
+		int number = 0;
 		try
 		{
 			var page = await _browserPageManager.GetPageAsync();
@@ -44,22 +45,28 @@ public class ProcessHashtagHandler : INotificationHandler<ProcessHashtagNotifica
 			bool inputResult = await page.TypeFieldValueAsync(_searchCssSelector, $"#{hashtagToCheck}", _inputDelay);
 			string resultXPath = _configuration["searchResultXpath"]
 				.Replace("hashtagWord", hashtagToCheck);
-			await page.WaitForXPathAsync(resultXPath);
+			await page.WaitForXPathAsync(resultXPath, new WaitForSelectorOptions { Timeout = _inputDelay * 20 });
 			var result = await page.XPathAsync(resultXPath);
 			var innerHtml = await result[0]
 				.GetPropertyAsync("innerHTML")
 				.Result.JsonValueAsync<string>();
-			int number = ParseToInt(innerHtml);
+			number = ParseToInt(innerHtml);
 			_logger.LogInformation("Success for parsing #{hashtag}: {publications}", hashtagToCheck, number);
-			_browserPageManager.PageIsInUse = false;
-			await _mediator.Publish(new ParsingPublicationsDoneNotification(hashtagToCheck, number));
-			await _mediator.Publish(new ProcessHashtagNotification());
+		}
+		catch (WaitTaskTimeoutException)
+		{
+			_logger.LogInformation("Failed to find #{hashtag}, assume publications: {publications}", hashtagToCheck, 0);
 		}
 		catch (Exception ex)
 		{
-			_browserPageManager.PageIsInUse = false;
-			_logger.LogError("Exception processing #{hashtag}: {message}", hashtagToCheck, ex.Message);
+			_logger.LogError("Exception processing #{hashtag}: {message}.", hashtagToCheck, ex.Message);
 			throw;
+		}
+		finally
+		{
+			_browserPageManager.PageIsInUse = false;
+			await _mediator.Publish(new ParsingPublicationsDoneNotification(hashtagToCheck, number));
+			await _mediator.Publish(new ProcessHashtagNotification());
 		}
 	}
 

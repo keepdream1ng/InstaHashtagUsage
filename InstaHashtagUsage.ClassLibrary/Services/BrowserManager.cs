@@ -7,7 +7,7 @@ public class BrowserManager : IDisposable, IBrowserManager
 	private readonly object _lock = new object();
 	private readonly ILogger<BrowserManager> _logger;
 	private readonly IConfiguration _configuration;
-	private bool RunBrowserHeadless => _configuration["headlessBrowser"] == "true";
+	private bool RunBrowserHeadless => _configuration.GetValue<bool>("headlessBrowser");
 
 	public BrowserManager(ILogger<BrowserManager> logger, IConfiguration configuration)
 	{

@@ -21,7 +21,9 @@ public class NewInputHandler : INotificationHandler<NewInputNotification>
 
 	public async Task Handle(NewInputNotification notification, CancellationToken cancellationToken)
 	{
-		string[] hashtags = notification.NewInput.Split(' ', ',', StringSplitOptions.RemoveEmptyEntries);
+		string[] hashtags = notification.NewInput
+			.ToLower()
+			.Split(new char[] { ' ', '.', ',' }, StringSplitOptions.RemoveEmptyEntries);
 		_logger.LogInformation("Input splitted into array {hashtags}", (object)hashtags);
 		await _hashtagQueue.AddRangeAsync(hashtags);
 		_mediatr.Publish(new ProcessHashtagNotification());
