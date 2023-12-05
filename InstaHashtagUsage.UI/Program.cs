@@ -59,6 +59,8 @@ namespace InstaHashtagUsage.UI
 			services.AddSingleton<IBrowserManager, BrowserManager>();
 			services.AddSingleton<IBrowserPageManager, BrowserPageManager>();
 			services.AddSingleton<IHashtagQueue, HashtagQueue>();
+			services.AddSingleton<IParsingNotificationService, ParsingNotificationService>();
+			services.AddSingleton<IHastagCountTableFactory, HastagCountTableFactory>();
 			services.AddWindowsFormsBlazorWebView();
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(ClassLibraryEntryPoint)));
 			services.AddSingleton<MainForm>();

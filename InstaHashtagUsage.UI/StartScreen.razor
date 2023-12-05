@@ -1,5 +1,5 @@
-@inject IMediator mediator;
-@inject ILogger<StartScreen> logger;
+@inject IMediator mediator
+@inject ILogger<StartScreen> logger
 
 
 @if (LoggedIn != true)
@@ -25,8 +25,8 @@
 
 @if (LoggedIn == true)
 {
-	<p>Logged in successfully.</p>
 	<HashtagInput />
+	<TableContainer />
 }
 
 @code {

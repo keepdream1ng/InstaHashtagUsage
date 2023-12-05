@@ -1,0 +1,98 @@
+@using InstaHashtagUsage.ClassLibrary.Models
+@using InstaHashtagUsage.ClassLibrary.Services
+@using InstaHashtagUsage.ClassLibrary.Mediatr
+@inject IParsingNotificationService notificationsService
+@inject IMediator mediator
+
+<br />
+@if (Model is not null)
+{
+	<table>
+		<thead>
+			<th
+				contenteditable="true"
+				colspan="@Model.Table.Length">
+				@TableName
+			</th>
+		</thead>
+		<tr>
+			@for (int col = 0; col < Model.Table.Length; col++)
+			{
+				<th>
+					@GetColumnHeader(col)
+				</th>
+			}
+		</tr>
+		@for (int row = 0; row < Model.MaxCount; row++)
+		{
+			<tr>
+				@for (int col = 0; col < Model.Table.Length; col++)
+				{
+					<td>
+						@GetModelRepresentation(row, col)
+					</td>
+				}
+			</tr>
+		}
+	</table>
+	<br />
+}
+
+@code {
+	[Parameter]
+	public int ComponentId { get; set; }
+	[Parameter]
+	public int ActiveTableId { get; set; }
+	[Parameter]
+	public bool ShowCount { get; set; }
+	public HashtagCountTable Model { get; private set; }
+	public string TableName { get; set; }
+
+	bool IsTableActive
+	{
+		get
+		{
+			return ComponentId == ActiveTableId;
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		notificationsService.OnParsingDoneNotificationReceived += HandleParsingNotifications;
+		Model = await mediator.Send(new NewHashtagCountTableRequest());
+		TableName = $"Table {ComponentId}";
+		StateHasChanged();
+	}
+
+	private void HandleParsingNotifications(ParsingPublicationsDoneNotification notification)
+	{
+		if (IsTableActive)
+		{
+			Model.Add(new HashtagCountPair(notification.Hashtag, notification.Count));
+			StateHasChanged();
+		}
+	}
+
+	private string GetModelRepresentation(int row, int col)
+	{
+		HashtagCountPair hashtag = Model.Get(row, col);
+		if (hashtag is null) return string.Empty;
+		if (!ShowCount) return hashtag.Hashtag;
+		return $"{hashtag.Hashtag} / {hashtag.Count}";
+	}
+
+	private string GetColumnHeader(int col)
+	{
+		if (col == 0) return $"{GetStringCount(Model.Thresholds[0])} and more";
+		if (col == Model.Thresholds.Length) return $"{GetStringCount(Model.Thresholds.Last())} and less";
+		if ((col > 0) && (col < Model.Thresholds.Length)) return $"{GetStringCount(Model.Thresholds[col - 1])} - {GetStringCount(Model.Thresholds[col])}";
+		return string.Empty;
+	}
+
+	private string GetStringCount(int count)
+	{
+		if (count > 1000000) return $"{count / 1000000}m";
+		if (count > 1000) return $"{count / 1000}k";
+		return count.ToString();
+	}
+}

@@ -1,6 +1,7 @@
-@inject IMediator mediator;
-@inject ILogger<HashtagInput> logger;
+@inject IMediator mediator
+@inject ILogger<HashtagInput> logger
 
+<h3>Input new hashtag to search here anytime.</h3>
 <form @onsubmit="Submit">
 	<label for="addHashtagInput">Add hashtag to check:</label>
 	<input id="addHashtagInput" placeholder="words you interested in" @bind-value="newInput" required />

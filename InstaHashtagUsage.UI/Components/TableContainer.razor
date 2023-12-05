@@ -1,0 +1,36 @@
+<h4>Hashtag Usage Tables</h4>
+<label>
+	<small>
+		Show count
+	</small>
+	<InputCheckbox @bind-Value="ShowCount" />
+</label>
+<br />
+
+<InputRadioGroup @bind-Value="ActiveTableId" Name="activeTable">
+	@foreach (var componentId in ComponentIdsList)
+	{
+		<label>
+			<InputRadio Value="@componentId" />
+			<small>
+				Check to add new results to table.
+			</small>
+			<HashtagCategoriesTable ComponentId="componentId" ActiveTableId="@ActiveTableId" ShowCount="@ShowCount" />
+		</label>
+	}
+</InputRadioGroup>
+
+<button @onclick="AddNewTable">Add new table</button>
+
+@code {
+	private List<int> ComponentIdsList = new List<int>() { 1 };
+	public int ActiveTableId { get; set; } = 1;
+	public bool ShowCount { get; set; } = true;
+
+	private void AddNewTable()
+	{
+		int newComponentId = ComponentIdsList.Count + 1;
+		ComponentIdsList.Add(newComponentId);
+		ActiveTableId = newComponentId;
+	}
+}
