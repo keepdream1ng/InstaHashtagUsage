@@ -1,33 +1,54 @@
 @inject IMediator mediator
 @inject ILogger<StartScreen> logger
 
-
-@if (LoggedIn != true)
-{
-	<form @onsubmit="Login">
-		<label for="login">
-			Login:
-		</label>
-		<input id="login" placeholder="fresh login" @bind-value="login" required />
-		<br />
-		<label for="password">
-			Password:
-		</label>
-		<input id="password" placeholder="fresh password" @bind-value="password" required />
-		<br />
-		<button disabled="@submitBtnDisabled" type="submit">Login</button>
-	</form>
-	@if (LoggedIn == false)
+<section
+	class="card">
+	@if (LoggedIn != true)
 	{
-		<p>Logging in failed.</p>
+		<form @onsubmit="Login" class="grid">
+			<label
+				for="login">
+				Login:
+			</label>
+			<input
+				id="login"
+				placeholder="fresh login"
+				@bind-value="login"
+				required
+				/>
+			<label
+				for="password">
+				Password:
+			</label>
+			<input
+				id="password"
+				placeholder="fresh password"
+				@bind-value="password"
+				required />
+			<br/>
+			<button
+				disabled="@submitBtnDisabled"
+				type="submit">
+				Login
+			</button>
+			@if (LoggedIn == false)
+			{
+				<p
+					class="alert">
+					Logging in failed.
+				</p>
+			}
+		</form>
 	}
-}
+</section>
 
-@if (LoggedIn == true)
-{
-	<HashtagInput />
-	<TableContainer />
-}
+<main class="main-ui">
+	@if (LoggedIn == true)
+	{
+		<HashtagInput />
+		<TableContainer />
+	}
+</main>
 
 @code {
 	public bool? LoggedIn { get; set; } = null;

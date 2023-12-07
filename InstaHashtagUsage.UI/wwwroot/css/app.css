@@ -16,10 +16,15 @@ html, body {
 }
 
 button, input, textarea, select, fieldset {
+    padding: 0 0.5rem;
     font: inherit;
     color: inherit;
     background-color: inherit;
     border-radius: 5px;
+}
+
+button:focus{
+    outline: 3px double gray;
 }
 
 table {
@@ -34,6 +39,27 @@ td {
     color: inherit;
     border: 1px solid black;
     font-size: 1rem;
+}
+
+.card{
+    max-width:400px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    box-shadow: lightgray 5px 5px;
+}
+
+.grid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}
+.alert{
+    color: orangered;
 }
 
 /*blazor specific code*/
