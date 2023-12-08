@@ -5,7 +5,8 @@
 }
 
 :root {
-    --BG-COLOR: rgb(245, 243, 239);
+    --BG-COLOR: hsl(40, 23%, 95%);
+    --BG-COLOR-2: hsl(216, 77%, 95%);
 }
 
 html, body {
@@ -15,16 +16,32 @@ html, body {
     padding: 0 0.3rem;
 }
 
-button, input, textarea, select, fieldset {
+button,
+input,
+textarea,
+select,
+fieldset {
     padding: 0 0.5rem;
     font: inherit;
     color: inherit;
-    background-color: inherit;
+    background-color: var(--BG-COLOR-2);
     border-radius: 5px;
 }
 
-button:focus{
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+fieldset:focus{
     outline: 3px double gray;
+}
+
+button{
+    transition: tranform, 0.3s, ease-in-out;
+}
+
+button:hover{
+    transform: scale(1.02) translateY(-3px);
 }
 
 table {
