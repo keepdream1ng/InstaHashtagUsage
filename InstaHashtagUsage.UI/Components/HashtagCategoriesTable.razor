@@ -4,16 +4,14 @@
 @inject IParsingNotificationService notificationsService
 @inject IMediator mediator
 
-<br />
 @if (Model is not null)
 {
-	<table>
+	<table class="@TableClass">
 		<thead>
-			<th
-				contenteditable="true"
-				colspan="@Model.Table.Length">
+		<th contenteditable="true"
+			colspan="@Model.Table.Length">
 				@TableName
-			</th>
+		</th>
 		</thead>
 		<tr>
 			@for (int col = 0; col < Model.Table.Length; col++)
@@ -35,7 +33,6 @@
 			</tr>
 		}
 	</table>
-	<br />
 }
 
 @code {
@@ -47,6 +44,7 @@
 	public bool ShowCount { get; set; }
 	public HashtagCountTable Model { get; private set; }
 	public string TableName { get; set; }
+	private bool InputBeingProcessed = false;
 
 	bool IsTableActive
 	{
@@ -56,9 +54,27 @@
 		}
 	}
 
+	string TableClass
+	{
+		get
+		{
+			string status = string.Empty;
+			if (IsTableActive)
+			{
+				status = "selected";
+				if (InputBeingProcessed)
+				{
+					status += " processing";
+				}
+			}
+			return status;
+		}
+	}
+
 	protected override async Task OnInitializedAsync()
 	{
 		notificationsService.OnParsingDoneNotificationReceived += HandleParsingNotifications;
+		notificationsService.OnQueueIsProcessedNotificationReceived += HandleQueueIsDone;
 		Model = await mediator.Send(new NewHashtagCountTableRequest());
 		TableName = $"Table {ComponentId}";
 		StateHasChanged();
@@ -68,9 +84,16 @@
 	{
 		if (IsTableActive)
 		{
+			InputBeingProcessed = true;
 			Model.Add(new HashtagCountPair(notification.Hashtag, notification.Count));
 			StateHasChanged();
 		}
+	}
+
+	private void HandleQueueIsDone(object sender, EventArgs eventArgs)
+	{
+		InputBeingProcessed = false;
+		StateHasChanged();
 	}
 
 	private string GetModelRepresentation(int row, int col)

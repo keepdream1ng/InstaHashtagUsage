@@ -5,8 +5,12 @@
 }
 
 :root {
-    --BG-COLOR: hsl(40, 23%, 95%);
+    --BG-HUE: 40;
+    --BG-SAT: 23%;
+    --BG-LIGHT: 95%;
+    --BG-COLOR: hsl(var(--BG-HUE), var(--BG-SAT), var(--BG-LIGHT));
     --BG-COLOR-2: hsl(216, 77%, 95%);
+    --BG-COLOR-3: hsl(216, 77%, 90%);
 }
 
 html, body {
@@ -14,6 +18,12 @@ html, body {
     font-size: 1.2rem;
     background-color: var(--BG-COLOR);
     padding: 0 0.3rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    text-align: center;
+    margin-top: 1rem;
 }
 
 button,
@@ -25,24 +35,38 @@ fieldset {
     font: inherit;
     color: inherit;
     background-color: var(--BG-COLOR-2);
+    border: 1px solid black;
     border-radius: 5px;
 }
 
-button:focus,
-input:focus,
-textarea:focus,
-select:focus,
-fieldset:focus{
-    outline: 3px double gray;
+    button:focus,
+    input:focus,
+    textarea:focus,
+    select:focus,
+    fieldset:focus {
+        outline: 3px double gray;
+    }
+
+    input[type="radio"]:focus,
+    input[type="checkbox"]:focus {
+        outline: none;
+        transform: scale(1.1);
+    }
+
+
+button {
+    margin: 0.3rem 0;
+    transition: transform, 0.3s, ease-in-out;
 }
 
-button{
-    transition: tranform, 0.3s, ease-in-out;
+    button:not([disabled]):hover {
+        transform: scale(1.02) translateY(-3px);
+    }
+
+.selected {
+    background-color: var(--BG-COLOR-2);
 }
 
-button:hover{
-    transform: scale(1.02) translateY(-3px);
-}
 
 table {
     width: 100%;
@@ -56,27 +80,51 @@ td {
     color: inherit;
     border: 1px solid black;
     font-size: 1rem;
+    text-align: center;
 }
 
-.card{
-    max-width:400px;
-    margin-left:auto;
-    margin-right:auto;
+td {
+    padding: 0.1rem 0.3rem;
+    overflow: hidden;
+    height: 1.2rem;
+}
+
+.card {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 1rem;
-    padding: 0.5rem;
+    padding: 0 0.5rem;
     border: 1px solid black;
     border-radius: 0.5rem;
     box-shadow: lightgray 5px 5px;
 }
 
-.grid{
+.grid {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
 }
-.alert{
+
+.alert {
     color: orangered;
+}
+
+@keyframes gradientChange {
+    0% {
+        background-position: bottom;
+    }
+
+    100% {
+        background-position: top;
+    }
+}
+
+table.processing {
+    background-image: linear-gradient(var(--BG-COLOR-2) 25%, var(--BG-COLOR-3), var(--BG-COLOR-2) 75%);
+    background-size: 300% 300%;
+    animation: gradientChange 1s infinite linear;
 }
 
 /*blazor specific code*/

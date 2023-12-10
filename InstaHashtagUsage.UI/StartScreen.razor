@@ -1,10 +1,10 @@
 @inject IMediator mediator
 @inject ILogger<StartScreen> logger
 
-<section
-	class="card">
-	@if (LoggedIn != true)
-	{
+@if (LoggedIn != true)
+{
+	<section
+		class="card">
 		<form @onsubmit="Login" class="grid">
 			<label
 				for="login">
@@ -25,11 +25,10 @@
 				placeholder="fresh password"
 				@bind-value="password"
 				required />
-			<br/>
 			<button
-				disabled="@submitBtnDisabled"
+				disabled = "@submitBtnDisabled"
 				type="submit">
-				Login
+				@(submitBtnDisabled? "Attemting to login..." : "Login")
 			</button>
 			@if (LoggedIn == false)
 			{
@@ -39,16 +38,17 @@
 				</p>
 			}
 		</form>
-	}
-</section>
+	</section>
+}
 
-<main class="main-ui">
-	@if (LoggedIn == true)
-	{
+@if (LoggedIn == true)
+{
+	<main
+		class="main-ui grid">
 		<HashtagInput />
 		<TableContainer />
-	}
-</main>
+	</main>
+}
 
 @code {
 	public bool? LoggedIn { get; set; } = null;

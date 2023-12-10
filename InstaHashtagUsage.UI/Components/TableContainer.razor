@@ -3,29 +3,38 @@
 	<small>
 		Show count
 	</small>
-	<InputCheckbox @bind-Value="ShowCount" />
+	<InputCheckbox
+		@bind-Value="ShowCount"/>
 </label>
-<br />
 
-<InputRadioGroup @bind-Value="ActiveTableId" Name="activeTable">
+<InputRadioGroup
+	@bind-Value="ActiveTableId"
+	Name="activeTable">
 	@foreach (var componentId in ComponentIdsList)
 	{
 		<label>
-			<InputRadio Value="@componentId" />
+			<InputRadio
+				Value="@componentId"/>
 			<small>
 				Check to add new results to table.
 			</small>
-			<HashtagCategoriesTable ComponentId="componentId" ActiveTableId="@ActiveTableId" ShowCount="@ShowCount" />
+			<HashtagCategoriesTable
+				ComponentId="componentId"
+				ActiveTableId="@ActiveTableId"
+				ShowCount="@ShowCount"/>
 		</label>
 	}
 </InputRadioGroup>
 
-<button @onclick="AddNewTable">Add new table</button>
+<button
+	@onclick="AddNewTable">
+	Add new table
+</button>
 
 @code {
 	private List<int> ComponentIdsList = new List<int>() { 1 };
 	public int ActiveTableId { get; set; } = 1;
-	public bool ShowCount { get; set; } = true;
+	public bool ShowCount { get; set; } = false;
 
 	private void AddNewTable()
 	{

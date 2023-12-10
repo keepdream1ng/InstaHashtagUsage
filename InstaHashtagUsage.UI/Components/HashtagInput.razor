@@ -1,11 +1,23 @@
 @inject IMediator mediator
 @inject ILogger<HashtagInput> logger
 
-<h3>Input new hashtag to search here anytime.</h3>
-<form @onsubmit="Submit">
-	<label for="addHashtagInput">Add hashtag to check:</label>
-	<input id="addHashtagInput" placeholder="words you interested in" @bind-value="newInput" autocomplete="off" required />
-	<button type="submit">Add</button>
+<form
+	class="grid"
+	@onsubmit="Submit">
+	<label for="addHashtagInput">
+		Add hashtags to check anytime:
+	</label>
+	<textarea
+		id="addHashtagInput"
+		placeholder="words you interested in"
+		@bind="newInput"
+		rows="2"
+		autocomplete="off"
+		required />
+	<button
+		type="submit">
+		Add
+	</button>
 </form>
 
 @code {
