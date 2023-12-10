@@ -32,7 +32,13 @@ public class ProcessHashtagHandler : INotificationHandler<ProcessHashtagNotifica
 	public async Task Handle(ProcessHashtagNotification notification, CancellationToken cancellationToken)
 	{
 		// If another chain of handlers already processing the page this wont start second chain.
-		if (_browserPageManager.PageIsInUse || (_hashtagQueue.Count < 1)) return;
+		if (_browserPageManager.PageIsInUse) return;
+		// If there is no new hashtags to process it will notify UI and return.
+		if (_hashtagQueue.Count < 1)
+		{
+			await _mediator.Publish(new QueueIsProcessedNotification());
+			return;
+		}
 
 		_browserPageManager.PageIsInUse = true;
 		string hashtagToCheck = await _hashtagQueue.GetHashtagAsync();
