@@ -5,5 +5,6 @@
 		IBrowserManager BrowserManager { get; }
 		bool PageIsInUse { get; set; }
 		Task<IPage> GetPageAsync();
+		void Dispose();
 	}
 }

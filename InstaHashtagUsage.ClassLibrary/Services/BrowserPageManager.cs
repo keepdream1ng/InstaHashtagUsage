@@ -1,6 +1,6 @@
 ﻿namespace InstaHashtagUsage.ClassLibrary.Services;
 
-public class BrowserPageManager : IBrowserPageManager
+public class BrowserPageManager : IDisposable, IBrowserPageManager
 {
 	private IPage _page;
 	private readonly ILogger<BrowserPageManager> _logger;
@@ -60,5 +60,15 @@ public class BrowserPageManager : IBrowserPageManager
 				await e.Request.ContinueAsync();
 			}
 		};
+	}
+
+	public async void Dispose()
+	{
+		if (_pageInitialized)
+		{
+			await _page.CloseAsync();
+			_page.Dispose();
+			_logger.LogInformation("Page {status}.", "closed");
+		}
 	}
 }
