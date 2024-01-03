@@ -100,8 +100,8 @@
 	{
 		HashtagCountPair hashtag = Model.Get(row, col);
 		if (hashtag is null) return string.Empty;
-		if (!ShowCount) return hashtag.Hashtag;
-		return $"{hashtag.Hashtag} / {hashtag.Count}";
+		if (!ShowCount) return $"#{hashtag.Hashtag}";
+		return $"#{hashtag.Hashtag} / {hashtag.Count}";
 	}
 
 	private string GetColumnHeader(int col)
