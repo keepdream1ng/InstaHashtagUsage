@@ -24,7 +24,7 @@ public class HashtagCountTable
 		// Checks what column fits hachtag based on thresholds values.
 		for (int i = 0; i < Table.Length; i++)
 		{
-			if (pair.Count < Thresholds[int.Min(i, Thresholds.Length - 1)]) continue;
+			if (pair.Count <= Thresholds[int.Min(i, Thresholds.Length - 1)]) continue;
 			Table[i].Add(pair);
 			return;
 		}
