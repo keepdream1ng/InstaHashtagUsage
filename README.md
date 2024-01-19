@@ -1,7 +1,9 @@
 # InstaHashtagUsage
-This is a desktop app for checking instagram hashtag publications count. Console prototype is [here](https://github.com/keepdream1ng/scrapInstagramHashtag).
-App checks input hashtags coutns on instagram using a headless browser and categorizes them based on appsettings.json file config.
-Example for 4 categories: "hashtagCategoriesThresholds": [500000, 10000, 0]
+This is a desktop app for obtaining instagram hashtag publications count. 
+App checks input hashtags coutns on site using a headless browser and categorizes them based on appsettings.json file config.
+Console prototype is [here](https://github.com/keepdream1ng/scrapInstagramHashtag).
+
+Example appsettings.json line for 4 categories: "hashtagCategoriesThresholds": [500000, 10000, 0]
 You can also show hidden browser whith option "headlessBrowser": false
 
 This app needs to login to Instagram like any other user, and it also just helps categorize hashtags you can lookup online.
