@@ -27,9 +27,8 @@ If you find chars you need to remove from input automatically, add it into this 
 ```json
   "cleanThisChars": [" ", ".", ",", "#", "\n", "\t"],
 ```
-Add hashtag to search anytime, dont forget co create and select different table if your research has multiple topics.
-Edit table header afterdouble click to note the topic.
-You can copy entire result table just by selecting UI, and pressing Ctrl+C.
+Add hashtags to search anytime, don't forget to create and select different table to be filled if your research has multiple topics.
+Edit table header after double click to note the topic. You can copy the entire result just by selecting UI, and pressing Ctrl+C.
 
 Running this on non dev's pc may require installation of [webview2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) if OS is older.
 
